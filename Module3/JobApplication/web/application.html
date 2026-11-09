@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+    File       : application.html
+    Course     : CSD 430
+    Author     : Zachary White
+    Date       : November 8, 2026
+    Professor  : Darrell Payne
+    Purpose    : Four-step job application form for the fictional company Iron Soft.
+                 The form posts its data to applicationresults.jsp, which displays it.
+                 Styling is in css/style.css and the step and validation logic is in
+                 js/application.js. No Java code is used in this file.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iron Soft | Job Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Marks the page as script-enabled so the steps can be hidden and shown -->
+    <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<div class="shell">
+
+    <!-- ===== Left rail: brand and step list ===== -->
+    <aside class="rail">
+        <div class="brand">
+            <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M16 2l12 7v14l-12 7L4 23V9z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+                <path d="M10 16h12M16 10v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+            <span class="brand-name">Iron Soft</span>
+        </div>
+        <h2 class="rail-title">Join the team that builds the tools other teams rely on.</h2>
+        <ol class="rail-steps" id="railSteps">
+            <li>Personal info</li>
+            <li>Position and availability</li>
+            <li>Experience and skills</li>
+            <li>Review and submit</li>
+        </ol>
+        <p class="rail-note">Takes about two minutes. Your answers appear on the next page and are not saved.</p>
+    </aside>
+
+    <!-- ===== Right side: the floating form card ===== -->
+    <main class="card">
+
+        <div class="progress" aria-hidden="true">
+            <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+        </div>
+        <p class="step-label" id="stepLabel" aria-live="polite">Step 1 of 4: Personal info</p>
+
+        <!-- The form sends its data to applicationresults.jsp using POST -->
+        <form id="applicationForm" action="applicationresults.jsp" method="post" novalidate>
+
+            <!-- ---------- Step 1: Personal info ---------- -->
+            <section class="step" data-step="0" aria-labelledby="h-personal">
+                <h1 id="h-personal">Tell us who you are</h1>
+                <p class="lead">We use this to contact you about your application.</p>
+
+                <!-- Input type: text -->
+                <div class="field" data-field="fullName">
+                    <label for="fullName">Full name</label>
+                    <input class="control" type="text" id="fullName" name="fullName" maxlength="60" autocomplete="name">
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: email -->
+                <div class="field" data-field="email">
+                    <label for="email">Email address</label>
+                    <input class="control" type="email" id="email" name="email" maxlength="80" autocomplete="email">
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: tel -->
+                <div class="field" data-field="phone">
+                    <label for="phone">Phone number</label>
+                    <input class="control" type="tel" id="phone" name="phone" maxlength="20" autocomplete="tel" placeholder="419-555-0123">
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: url (optional) -->
+                <div class="field" data-field="portfolio">
+                    <label for="portfolio">Portfolio or LinkedIn link <span class="optional">optional</span></label>
+                    <input class="control" type="url" id="portfolio" name="portfolio" maxlength="120" placeholder="https://">
+                    <p class="msg" role="alert"></p>
+                </div>
+            </section>
+
+            <!-- ---------- Step 2: Position and availability ---------- -->
+            <section class="step" data-step="1" aria-labelledby="h-position">
+                <h1 id="h-position">Pick the role you want</h1>
+                <p class="lead">Choose the position and tell us when you could begin.</p>
+
+                <!-- Input type: drop-down list -->
+                <div class="field" data-field="role">
+                    <label for="role">Position</label>
+                    <select class="control" id="role" name="role">
+                        <option value="">Choose a position</option>
+                        <option value="Software Developer">Software Developer</option>
+                        <option value="Systems Administrator">Systems Administrator</option>
+                        <option value="Network Engineer">Network Engineer</option>
+                        <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                        <option value="Database Administrator">Database Administrator</option>
+                        <option value="IT Support Specialist">IT Support Specialist</option>
+                    </select>
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: radio buttons (styled as choice cards) -->
+                <fieldset class="field" data-field="employmentType">
+                    <legend>Employment type</legend>
+                    <div class="choices">
+                        <label class="choice"><input type="radio" name="employmentType" value="Full-time"><span>Full-time</span></label>
+                        <label class="choice"><input type="radio" name="employmentType" value="Part-time"><span>Part-time</span></label>
+                        <label class="choice"><input type="radio" name="employmentType" value="Contract"><span>Contract</span></label>
+                    </div>
+                    <p class="msg" role="alert"></p>
+                </fieldset>
+
+                <!-- Input type: date -->
+                <div class="field" data-field="startDate">
+                    <label for="startDate">Earliest start date</label>
+                    <input class="control" type="date" id="startDate" name="startDate">
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: radio buttons (yes or no) -->
+                <fieldset class="field" data-field="workAuth">
+                    <legend>Are you legally authorized to work in the United States?</legend>
+                    <div class="choices">
+                        <label class="choice"><input type="radio" name="workAuth" value="Yes"><span>Yes</span></label>
+                        <label class="choice"><input type="radio" name="workAuth" value="No"><span>No</span></label>
+                    </div>
+                    <p class="msg" role="alert"></p>
+                </fieldset>
+
+                <!-- Input type: range slider -->
+                <div class="field" data-field="salary">
+                    <label for="salary">Desired yearly salary</label>
+                    <div class="slider-row">
+                        <input type="range" id="salary" name="salary" min="40000" max="180000" step="5000" value="80000">
+                        <output id="salaryOut" for="salary">$80,000</output>
+                    </div>
+                    <p class="msg" role="alert"></p>
+                </div>
+            </section>
+
+            <!-- ---------- Step 3: Experience and skills ---------- -->
+            <section class="step" data-step="2" aria-labelledby="h-experience">
+                <h1 id="h-experience">Show us what you bring</h1>
+                <p class="lead">Your background and the skills you want us to notice.</p>
+
+                <!-- Input type: number -->
+                <div class="field" data-field="years">
+                    <label for="years">Years of IT experience</label>
+                    <input class="control" type="number" id="years" name="years" min="0" max="40" inputmode="numeric">
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: drop-down list -->
+                <div class="field" data-field="education">
+                    <label for="education">Highest education completed</label>
+                    <select class="control" id="education" name="education">
+                        <option value="">Choose one</option>
+                        <option value="High school diploma or GED">High school diploma or GED</option>
+                        <option value="Some college">Some college</option>
+                        <option value="Associate degree">Associate degree</option>
+                        <option value="Bachelor's degree">Bachelor's degree</option>
+                        <option value="Master's degree or higher">Master's degree or higher</option>
+                        <option value="Trade or bootcamp certification">Trade or bootcamp certification</option>
+                    </select>
+                    <p class="msg" role="alert"></p>
+                </div>
+
+                <!-- Input type: checkboxes (styled as clickable chips) -->
+                <fieldset class="field" data-field="skills">
+                    <legend>Skills <span class="optional">pick at least one</span></legend>
+                    <div class="chips">
+                        <label class="chip"><input type="checkbox" name="skills" value="Java"><span>Java</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="JSP and Servlets"><span>JSP and Servlets</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="JavaScript"><span>JavaScript</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="SQL"><span>SQL</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Python"><span>Python</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Linux"><span>Linux</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Networking"><span>Networking</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Cloud (AWS or Azure)"><span>Cloud (AWS or Azure)</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Git"><span>Git</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Cybersecurity"><span>Cybersecurity</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Troubleshooting"><span>Troubleshooting</span></label>
+                        <label class="chip"><input type="checkbox" name="skills" value="Project management"><span>Project management</span></label>
+                    </div>
+                    <p class="msg" role="alert"></p>
+                </fieldset>
+            </section>
+
+            <!-- ---------- Step 4: Review and submit ---------- -->
+            <section class="step" data-step="3" aria-labelledby="h-review">
+                <h1 id="h-review">Check your answers</h1>
+                <p class="lead">Use Edit to change anything before you submit.</p>
+
+                <!-- Filled in by js/application.js -->
+                <div id="reviewList" class="review"></div>
+
+                <div class="field" data-field="confirm">
+                    <label class="check">
+                        <input type="checkbox" name="confirm" value="Confirmed">
+                        <span>I confirm that these details are accurate.</span>
+                    </label>
+                    <p class="msg" role="alert"></p>
+                </div>
+            </section>
+
+            <!-- ---------- Navigation buttons ---------- -->
+            <div class="actions">
+                <button type="button" class="btn ghost" id="backBtn">Back</button>
+                <button type="button" class="btn primary" id="nextBtn" data-ready="false">Continue</button>
+                <button type="submit" class="btn primary" id="submitBtn" data-ready="false">Submit application</button>
+            </div>
+        </form>
+
+        <p class="footer">CSD 430 | Zachary White | Iron Soft is a fictional company made for a class project.</p>
+    </main>
+</div>
+
+<script src="js/application.js"></script>
+</body>
+</html>

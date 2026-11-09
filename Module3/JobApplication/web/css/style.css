@@ -1,0 +1,324 @@
+/*
+   style.css | CSD 430 | Zachary White | November 8, 2026
+   Shared stylesheet for application.html and applicationresults.jsp
+   Styling was configured using Claude Projects via Anthropic, and verified by Zachary White.
+*/
+
+:root {
+    --fog: #e8ecf1;
+    --plate: #ffffff;
+    --ink: #16212c;
+    --muted: #586879;
+    --line: #d2d9e2;
+    --steel: #8696ab;
+    --forge: #1f5eff;
+    --forge-dark: #1448cc;
+    --forge-wash: #eaf0ff;
+    --ember: #f29a2e;
+    --ok: #12805a;
+    --ok-wash: #e6f5ee;
+    --err: #c73535;
+    --err-wash: #fdeaea;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(22, 33, 44, 0.06), 0 12px 32px -8px rgba(22, 33, 44, 0.18), 0 32px 64px -24px rgba(22, 33, 44, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink);
+    background-color: var(--fog);
+    /* faint diagonal plating, like sheet iron */
+    background-image: repeating-linear-gradient(135deg, rgba(22, 33, 44, 0.025) 0 2px, transparent 2px 14px);
+}
+
+h1, h2 {
+    font-family: "Sora", "Segoe UI", Arial, sans-serif;
+    line-height: 1.2;
+    margin: 0;
+}
+
+h1:focus { outline: none; }
+
+a { color: var(--forge); }
+
+/* ---------- Layout: left rail plus floating card ---------- */
+.shell {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 640px);
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: start;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+.rail {
+    position: sticky;
+    top: 3rem;
+    padding-top: 0.5rem;
+}
+
+.brand { display: flex; align-items: center; gap: 0.6rem; color: var(--ink); }
+.brand-mark { width: 34px; height: 34px; color: var(--forge); }
+.brand-name { font-family: "Sora", sans-serif; font-weight: 700; font-size: 1.25rem; }
+
+.rail-title { margin: 1.75rem 0 1.5rem; font-size: 1.55rem; font-weight: 600; }
+
+.rail-steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.rail-steps li {
+    position: relative;
+    padding: 0.55rem 0 0.55rem 2.4rem;
+    color: var(--muted);
+    counter-increment: s;
+}
+.rail-steps li::before {
+    content: counter(s);
+    position: absolute;
+    left: 0; top: 0.45rem;
+    width: 1.7rem; height: 1.7rem;
+    display: grid; place-items: center;
+    border: 1.5px solid var(--steel);
+    border-radius: 50%;
+    font-size: 0.8rem; font-weight: 700;
+    background: var(--plate);
+}
+.rail-steps li.active { color: var(--ink); font-weight: 700; }
+.rail-steps li.active::before { border-color: var(--forge); background: var(--forge); color: #fff; }
+.rail-steps li.done::before { content: "\2713"; border-color: var(--ok); background: var(--ok); color: #fff; }
+
+.rail-note { margin-top: 1.5rem; font-size: 0.9rem; color: var(--muted); }
+
+/* ---------- The floating card ---------- */
+.card {
+    background: var(--plate);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem 2.25rem 1.5rem;
+}
+
+/* ---------- Progress bar: steel to blue to molten orange ---------- */
+.bar { height: 8px; border-radius: 99px; background: var(--fog); overflow: hidden; }
+.bar-fill {
+    --p: 25%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--steel), var(--forge) 55%, var(--ember));
+    clip-path: inset(0 calc(100% - var(--p)) 0 0);
+    transition: clip-path 0.5s ease;
+}
+.step-label { margin: 0.75rem 0 1.5rem; font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+
+/* ---------- Steps ---------- */
+.js .step[hidden] { display: none; }
+.step h1 { font-size: 1.7rem; font-weight: 700; }
+.lead { margin: 0.4rem 0 1.5rem; color: var(--muted); }
+
+.enter { animation: enter 0.35s ease both; }
+@keyframes enter {
+    from { opacity: 0; transform: translateX(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------- Fields ---------- */
+.field { margin: 0 0 1.25rem; padding: 0; border: 0; min-width: 0; }
+.field > label:not(.check), legend {
+    display: block;
+    padding: 0;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.optional { font-weight: 400; color: var(--muted); font-size: 0.85rem; margin-left: 0.35rem; }
+
+.control {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font: inherit;
+    color: var(--ink);
+    background: var(--plate);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+.control:hover { border-color: var(--steel); }
+.control:focus { outline: none; border-color: var(--forge); box-shadow: 0 0 0 4px rgba(31, 94, 255, 0.16); }
+
+.msg { min-height: 1.3rem; margin: 0.3rem 0 0; font-size: 0.85rem; }
+
+/* Live validation colors */
+.field[data-state="valid"] .control { border-color: var(--ok); }
+.field[data-state="valid"] input.control {
+    padding-right: 2.6rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10.5l4 4 8-9' fill='none' stroke='%2312805a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 18px;
+}
+.field[data-state="invalid"] .control { border-color: var(--err); background-color: var(--err-wash); }
+.field[data-state="invalid"] .msg { color: var(--err); font-weight: 500; }
+.field[data-state="invalid"] .choice span,
+.field[data-state="invalid"] .chip span { border-color: var(--err); }
+
+/* ---------- Choice cards (radio buttons) ---------- */
+.choices { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.choice { position: relative; flex: 1 1 120px; }
+.choice input, .chip input, .check input {
+    position: absolute; opacity: 0; width: 1px; height: 1px;
+}
+.choice span {
+    display: block;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    font-weight: 500;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s, color 0.15s, transform 0.1s;
+}
+.choice span:hover { border-color: var(--steel); background: var(--fog); }
+.choice input:checked + span { border-color: var(--forge); background: var(--forge-wash); color: var(--forge-dark); font-weight: 700; }
+.choice input:focus-visible + span,
+.chip input:focus-visible + span { outline: 3px solid rgba(31, 94, 255, 0.4); outline-offset: 2px; }
+.choice span:active, .chip span:active { transform: scale(0.97); }
+
+/* ---------- Skill chips (checkboxes) ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip { position: relative; }
+.chip span {
+    display: inline-block;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.92rem;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s, color 0.15s, transform 0.1s;
+}
+.chip span:hover { border-color: var(--steel); background: var(--fog); }
+.chip input:checked + span { background: var(--forge); border-color: var(--forge); color: #fff; font-weight: 700; }
+.chip input:checked + span::before { content: "\2713\00a0"; }
+
+/* ---------- Salary slider ---------- */
+.slider-row { display: flex; align-items: center; gap: 1rem; }
+.slider-row input[type="range"] { flex: 1; accent-color: var(--forge); height: 1.5rem; cursor: pointer; }
+.slider-row output {
+    min-width: 6.5rem;
+    padding: 0.4rem 0.8rem;
+    text-align: center;
+    font-family: "Sora", sans-serif;
+    font-weight: 600;
+    background: var(--forge-wash);
+    color: var(--forge-dark);
+    border-radius: 8px;
+}
+
+/* ---------- Confirmation checkbox ---------- */
+.check { position: relative; display: flex; align-items: center; gap: 0.7rem; cursor: pointer; padding: 0.9rem 1rem; border: 1.5px solid var(--line); border-radius: 10px; font-weight: 500; }
+.check::before {
+    content: "";
+    flex: none;
+    width: 1.3rem; height: 1.3rem;
+    border: 1.5px solid var(--steel);
+    border-radius: 6px;
+    background: var(--plate);
+    transition: background-color 0.15s, border-color 0.15s;
+}
+.check:has(input:checked) { border-color: var(--forge); background: var(--forge-wash); }
+.check:has(input:checked)::before {
+    background: var(--forge) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10.5l4 4 8-9' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 80% no-repeat;
+    border-color: var(--forge);
+}
+.check:has(input:focus-visible) { outline: 3px solid rgba(31, 94, 255, 0.4); outline-offset: 2px; }
+.field[data-state="invalid"] .check { border-color: var(--err); background: var(--err-wash); }
+
+/* ---------- Review step ---------- */
+.review { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+.review-group { border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; }
+.review-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.review-head h2 { font-size: 1rem; }
+.review dl { display: grid; grid-template-columns: 11rem 1fr; gap: 0.35rem 1rem; margin: 0; }
+.review dt { color: var(--muted); font-size: 0.9rem; }
+.review dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }
+.link { background: none; border: 0; padding: 0.2rem 0.4rem; font: inherit; font-weight: 700; color: var(--forge); cursor: pointer; border-radius: 6px; }
+.link:hover { background: var(--forge-wash); }
+
+/* ---------- Buttons ---------- */
+.actions { display: flex; justify-content: space-between; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.actions [hidden] { display: none; }
+.btn {
+    font: inherit;
+    font-weight: 700;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 3px solid rgba(31, 94, 255, 0.4); outline-offset: 2px; }
+.btn.ghost { background: transparent; color: var(--muted); border-color: var(--line); }
+.btn.ghost:hover { color: var(--ink); border-color: var(--steel); background: var(--fog); }
+.btn.primary { margin-left: auto; color: #fff; background: var(--steel); }
+/* The primary button turns blue when the step is complete, and orange when hovered */
+.btn.primary[data-ready="true"] { background: var(--forge); box-shadow: 0 6px 16px -6px rgba(31, 94, 255, 0.6); }
+.btn.primary[data-ready="true"]:hover { background: var(--ember); color: var(--ink); box-shadow: 0 6px 16px -6px rgba(242, 154, 46, 0.7); }
+.btn.primary[data-ready="false"]:hover { background: #6f8099; }
+
+.footer { margin: 1.5rem 0 0; text-align: center; font-size: 0.8rem; color: var(--muted); }
+
+/* ==========================================================
+   Results page (applicationresults.jsp)
+   ========================================================== */
+.results { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; display: grid; gap: 1.5rem; }
+.results .brand { margin-bottom: 0.5rem; }
+
+.confirm-card h1 { font-size: 1.9rem; margin-bottom: 0.6rem; }
+.confirm-card p { margin: 0 0 1rem; color: var(--muted); }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.75rem; margin: 1.25rem 0; }
+.fact { padding: 0.8rem 1rem; background: var(--forge-wash); border-radius: 10px; }
+.fact b { display: block; font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+.fact span { font-family: "Sora", sans-serif; font-weight: 600; overflow-wrap: anywhere; }
+
+.skill-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.skill-row span { padding: 0.3rem 0.8rem; font-size: 0.88rem; font-weight: 700; color: #fff; background: var(--forge); border-radius: 999px; }
+
+.table-card h2 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+.table-card p { color: var(--muted); margin: 0 0 1rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+caption { text-align: left; padding-bottom: 0.6rem; font-weight: 700; }
+th, td { text-align: left; padding: 0.7rem 0.9rem; vertical-align: top; }
+thead th { background: var(--ink); color: #fff; font-size: 0.9rem; }
+thead th:first-child { border-top-left-radius: 8px; }
+thead th:last-child { border-top-right-radius: 8px; }
+tbody td { border-bottom: 1px solid var(--line); }
+tbody td:first-child { font-weight: 700; white-space: nowrap; }
+tbody td:nth-child(2) { color: var(--muted); font-size: 0.92rem; }
+tbody td:last-child { overflow-wrap: anywhere; font-weight: 500; }
+tr.group th { background: var(--forge-wash); color: var(--forge-dark); font-family: "Sora", sans-serif; font-size: 0.95rem; }
+tbody tr:not(.group):hover td { background: #f6f8fb; }
+
+.again { display: inline-block; margin-top: 1rem; padding: 0.8rem 1.6rem; font-weight: 700; text-decoration: none; color: #fff; background: var(--forge); border-radius: 999px; transition: background-color 0.2s, color 0.2s, transform 0.1s; }
+.again:hover { background: var(--ember); color: var(--ink); }
+.again:active { transform: scale(0.97); }
+
+/* ---------- Small screens ---------- */
+@media (max-width: 900px) {
+    .shell { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding: 1.5rem 1rem; }
+    .rail { position: static; }
+    .rail-title, .rail-steps, .rail-note { display: none; }
+    .card { padding: 1.5rem 1.25rem 1.25rem; }
+    .review dl { grid-template-columns: 1fr; }
+    .review dt { margin-top: 0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
