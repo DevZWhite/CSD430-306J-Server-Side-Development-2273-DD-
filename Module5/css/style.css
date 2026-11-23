@@ -1,0 +1,54 @@
+/* 
+    Name Zachary White
+    Professor: Darrell Payne
+    Date 11.21.2026
+    Class: CSD430 Server-Side Development
+    CSS: this document is reliable for the style of the displayed webpages within the CSD430 Project.
+*/
+
+body {
+    font-family: Georgia, serif;
+    background: radial-gradient(circle at top, #1d2250 0%, #0f1226 70%);
+    color: #e8e6f0;
+    margin: 0;
+    padding: 24px;
+    min-height: 100vh;
+}
+.page {
+    max-width: 960px;
+    margin: 0 auto;
+    background-color: rgba(20, 24, 56, 0.85);
+    border: 1px solid #3a4180;
+    border-radius: 10px;
+    padding: 24px 32px;
+}
+h1, h2 { color: #ffd479; }
+.description { line-height: 1.6; color: #c9c7dc; }
+.links li { margin-bottom: 16px; line-height: 1.5; }
+a { color: #8fd3ff; }
+a:hover { color: #ffd479; }
+.note { color: #9a98b5; font-style: italic; }
+.error { color: #ff8a8a; }
+.footer { margin-top: 32px; font-size: 0.85em; color: #8886a5; border-top: 1px solid #3a4180; padding-top: 12px; }
+
+.search { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.search input[type="text"] {
+    flex: 1; min-width: 220px; padding: 10px;
+    background: #0f1226; color: #e8e6f0;
+    border: 1px solid #3a4180; border-radius: 6px;
+}
+button, a.button {
+    background-color: #ffd479; color: #0f1226;
+    border: none; border-radius: 6px; padding: 10px 16px;
+    font-weight: bold; text-decoration: none; cursor: pointer;
+}
+button:hover, a.button:hover { background-color: #8fd3ff; color: #0f1226; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+th { background-color: #2a3070; color: #ffd479; text-align: left; padding: 10px; }
+td { padding: 10px; border-bottom: 1px solid #2f3568; }
+tr:nth-child(even) td { background-color: rgba(255, 255, 255, 0.04); }
+tr:hover td { background-color: rgba(143, 211, 255, 0.12); }
+@media (max-width: 600px) { .page { padding: 16px; } table { font-size: 0.85em; } }
+label { color: #ffd479; align-self: center; }
+select { padding: 10px; background: #0f1226; color: #e8e6f0; border: 1px solid #3a4180; border-radius: 6px; }
